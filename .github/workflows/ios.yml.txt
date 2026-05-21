@@ -1,0 +1,64 @@
+name: Build SpectrumApp iOS
+
+on:
+
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: macos-14
+
+    timeout-minutes: 120
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+
+      with:
+        python-version: "3.11"
+
+    - name: Install build tools
+
+      run: |
+
+        python -m pip install --upgrade pip
+
+        pip install \
+          cython \
+          kivy-ios
+
+    - name: Build native dependencies
+
+      run: |
+
+        toolchain build \
+          python3 \
+          numpy \
+          kivy \
+          opencv
+
+    - name: Create iOS project
+
+      run: |
+
+        toolchain create SpectrumApp .
+
+    - name: Copy assets
+
+      run: |
+
+        cp chart.png SpectrumApp-ios/
+
+    - name: Upload project
+
+      uses: actions/upload-artifact@v4
+
+      with:
+
+        name: SpectrumApp-iOS
+
+        path: SpectrumApp-ios

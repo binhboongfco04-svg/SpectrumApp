@@ -1,0 +1,5 @@
+kivy==2.3.0
+kivymd==1.2.0
+numpy==1.26.4
+opencv-python-headless==4.10.0.84
+kivy-garden.graph==0.4.0
